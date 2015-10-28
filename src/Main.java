@@ -54,12 +54,12 @@ public class Main {
 	
 	public static String ToMixedFraction(double x) {
 	    int w = (int)x,
-	        n = (int)(x * 64) % 64,
+	        n = (int)(x * 4096) % 4096,
 	        a = n & -n;
 	    if(w==0)
-		    return w + (n == 0 ? "" : " " + n / a + "/" + 64 / a);
+		    return (n == 0 ? "" : "" + n / a + "/" + 4096 / a);
 	    else
-	    	return w + (n == 0 ? "" : " " + n / a + "/" + 64 / a);
+	    	return w + (n == 0 ? "" : " " + n / a + "/" + 4096 / a);
 	}
 	
 	public static double Solve(String operator, double frac1, double frac2){
