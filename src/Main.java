@@ -13,6 +13,11 @@ public class Main {
 			
 		}
 	}
+
+	public int greatestCommonDenom(int gcdNum, int gcdDenom) { //Finds the Greatest common denominator
+  	  if (gcdDenom == 0) return gcdNum;
+  	  return greatestCommonDenom (gcdDenom, gcdNum % gcdDenom);
+    }
 	
 	public static boolean calculate() { //Calculate method, put in a method so I can call it unlimited times.
 		
@@ -35,19 +40,9 @@ public class Main {
 				, Double.parseDouble(secondFrac[1]));	
 		
 		if (fullInput.length != 3) { // Check to see 3 items in the String Array (two fractions and one operand)
-			
 			System.out.println("Invalid equation");
-			
 		} else {
-			
-			System.out.println(Solve(fullInput[1], needsSimplifying, needsSimplifying2));
-			
-	   	}
-		
-		for(int i = 0; i < fullInput.length; i++){
-			
-			System.out.println(fullInput[i]);
-			
+			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
 		}
 		
 	  	return true; //Call the calculate method that this is in so that when the user is done with the problem they can do another
@@ -55,6 +50,16 @@ public class Main {
 	
 	public static double divide(double num, double den){
 		return (num/den);
+	}
+	
+	public static String ToMixedFraction(double x) {
+	    int w = (int)x,
+	        n = (int)(x * 64) % 64,
+	        a = n & -n;
+	    if(w==0)
+		    return w + (n == 0 ? "" : " " + n / a + "/" + 64 / a);
+	    else
+	    	return w + (n == 0 ? "" : " " + n / a + "/" + 64 / a);
 	}
 	
 	public static double Solve(String operator, double frac1, double frac2){
