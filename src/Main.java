@@ -29,23 +29,62 @@ public class Main {
 	   
 		String[] fullInput = userInput.split(" "); //Declare String array to store the 1st and 2nd fraction as well as the operand
 		
-		String[] firstFrac = fullInput[0].split("/");
-		String[] secondFrac = fullInput[2].split("/");
+		if(fullInput[0].contains("_")){
+			String[] firstFrac = fullInput[0].split("_");
+			
+			String[] numDen = firstFrac[1].split("/");
 
-
-		double needsSimplifying = divide(Double.parseDouble(firstFrac[0])
-				, Double.parseDouble(firstFrac[1]));
-		
-		double needsSimplifying2 = divide(Double.parseDouble(secondFrac[0])
-				, Double.parseDouble(secondFrac[1]));	
-		
-		if (fullInput.length != 3) { // Check to see 3 items in the String Array (two fractions and one operand)
-			System.out.println("Invalid equation");
-		} else {
+			int firstFracNum = (Integer.parseInt(firstFrac[0]) * Integer.parseInt(numDen[1]))+Integer.parseInt(numDen[0]);
+			
+			firstFrac[0] = firstFracNum+"";
+			firstFrac[1] = numDen[1];
+			
+			String[] secondFrac = fullInput[2].split("/");
+			
+			double needsSimplifying = divide(Double.parseDouble(firstFrac[0])
+					, Double.parseDouble(firstFrac[1]));
+			
+			double needsSimplifying2 = divide(Double.parseDouble(secondFrac[0])
+					, Double.parseDouble(secondFrac[1]));
+			
 			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
+
+		} else if(fullInput[2].contains("_")){
+			String[] secondFrac = fullInput[0].split("_");
+			
+			String[] numDen = secondFrac[1].split("/");
+			
+			int secondFracNum = (Integer.parseInt(secondFrac[0]) * Integer.parseInt(numDen[1]))+Integer.parseInt(numDen[0]);
+			
+			secondFrac[0] = secondFracNum+"";
+			secondFrac[1] = numDen[1];
+			
+			String[] firstFrac = fullInput[0].split("/");
+			
+			double needsSimplifying = divide(Double.parseDouble(firstFrac[0])
+					, Double.parseDouble(firstFrac[1]));
+			
+			double needsSimplifying2 = divide(Double.parseDouble(secondFrac[0])
+					, Double.parseDouble(secondFrac[1]));
+			
+			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
+
+		} else {
+			
+			String[] firstFrac = fullInput[0].split("/");
+			String[] secondFrac = fullInput[2].split("/");
+	
+			double needsSimplifying = divide(Double.parseDouble(firstFrac[0])
+					, Double.parseDouble(firstFrac[1]));
+			
+			double needsSimplifying2 = divide(Double.parseDouble(secondFrac[0])
+					, Double.parseDouble(secondFrac[1]));	
+			
+			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
+
 		}
 		
-	  	return true; //Call the calculate method that this is in so that when the user is done with the problem they can do another
+	  	return true; 
 	}
 	
 	public static double divide(double num, double den){
