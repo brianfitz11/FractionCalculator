@@ -4,8 +4,8 @@ public class Main {
 	private static Scanner inputScanner = new Scanner(System.in);
 	private static String userInput;
 	
-	public static void main(String[] args) {
-		System.out.println("Welcome to the Fraction Calculator");
+	public static void main(String[] args) { //the main method. called every app start
+		System.out.println("Welcome to the Fraction Calculator"); //INtro
 		while(calculate() == true){
 			System.out.println("Input problem or type \"quit\" to quit.");
 			// 1/2 + 3/4
@@ -26,10 +26,11 @@ public class Main {
 		if (userInput.equals("quit")) { //If user inputs "quit" of any case, then quit the application
 		   return false;
 		}
-	   
-		String[] fullInput = userInput.split(" "); //Declare String array to store the 1st and 2nd fraction as well as the operand
 		
-		if(fullInput[0].contains("_")){
+		// 1/2 + 2/3 = userInput
+		String[] fullInput = userInput.split(" "); //Declare String array to store the 1st and 2nd fraction as well as the operand
+		// fullInput {1/2,+,2/3}
+		if(fullInput[0].contains("_")){ //if fullInput{1/2} has a _
 			String[] firstFrac = fullInput[0].split("_");
 			
 			String[] numDen = firstFrac[1].split("/");
@@ -49,7 +50,7 @@ public class Main {
 			
 			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
 
-		} else if(fullInput[2].contains("_")){
+		} else if(fullInput[2].contains("_")){ //if fullInput{2/3}
 			String[] secondFrac = fullInput[0].split("_");
 			
 			String[] numDen = secondFrac[1].split("/");
@@ -70,17 +71,27 @@ public class Main {
 			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
 
 		} else {
+			//String str = "Hello";
+			//String[] helloArr = str.split("e");
+			//helloArr = {H,e,llo};
 			
-			String[] firstFrac = fullInput[0].split("/");
-			String[] secondFrac = fullInput[2].split("/");
-	
+			String[] firstFrac = fullInput[0].split("/"); //takes fullFrac{1/2} and makes it firstFrac{1,/,2}
+			String[] secondFrac = fullInput[2].split("/"); //takes fullFrac{2/3} and makes it secondFrac{2,/,3}
+			//Print elements in array
+			/*for(int i=0;i<=fullInput.length;i++) {
+			 * 	System.out.println(fullInput[i]);
+			 * }*/
+			
 			double needsSimplifying = divide(Double.parseDouble(firstFrac[0])
 					, Double.parseDouble(firstFrac[1]));
 			
 			double needsSimplifying2 = divide(Double.parseDouble(secondFrac[0])
 					, Double.parseDouble(secondFrac[1]));	
 			
-			System.out.println(ToMixedFraction(Solve(fullInput[1], needsSimplifying, needsSimplifying2)));	
+			double Solved = Solve(fullInput[1], needsSimplifying, needsSimplifying2);
+			String toMixedFractioned = ToMixedFraction(Solved);
+			
+			System.out.println(toMixedFractioned);	
 
 		}
 		
@@ -103,7 +114,8 @@ public class Main {
 	
 	public static double Solve(String operator, double frac1, double frac2){
 		if(operator.equals("+")) {
-			return (frac1 + frac2);
+			double returnthis = frac1 + frac2;
+			return returnthis;
 		} else if (operator.equals("-")) {
 			return (frac1 - frac2);
 		} else if (operator.equals("*")) {
@@ -111,7 +123,7 @@ public class Main {
 		} else if (operator.equals("/")) {
 			return (frac1 / frac2);
 		} else {
-			System.err.format("\n Not a valid operator");
+			System.out.println("\n Not a valid operator");
 			System.exit(0);
 			return 0;
 		}
