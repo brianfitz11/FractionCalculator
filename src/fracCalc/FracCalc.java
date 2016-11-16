@@ -18,18 +18,7 @@ public class FracCalc {
     	}
     	scan.close();
 	}
-	
-	public static String toMixedFraction(double x) {
-	    int w = (int) x;
-	    int n = (int) (x * 2048) % 2048;
-	    int a = n & -n;
-	    if(w==0) {
-		    return (n == 0 ? "" : "" + n / a + "/" + 2048 / a);
-	    } else {
-	    	return w + (n == 0 ? "" : "_" + n / a + "/" + 2048 / a);
-	    }
-	}
-	
+
 	public static String produceAnswer(String input) { //EXAMPLE: 1_2/3 + 3/4
 		Scanner lineRdr = new Scanner(input);
 
@@ -49,10 +38,7 @@ public class FracCalc {
 
 		den1 = Double.parseDouble(frac1Str.substring(frac1Str.indexOf("/")+1, frac1Str.length()));
 		den2 = Double.parseDouble(frac2Str.substring(frac2Str.indexOf("/")+1, frac2Str.length()));
-
-		return "whole:"+(int)wn2+" numerator:"+(int)num2+" denominator:"+(int)den2;
 		
-		/*
 		frac1 = ((wn1*den1)+num1) / den1;
 		frac2 = ((wn2*den2)+num2) / den2;
 
@@ -60,20 +46,20 @@ public class FracCalc {
 
 		switch (oper) {
 			case "+":
-				answer = toMixedFraction(frac1 + frac2);
-				return "result: " + answer;
+				answer = ""+(frac1 + frac2);
+				return answer;
 			case "-":
-				answer = toMixedFraction(frac1 - frac2);
-				return "result: " + answer;
+				answer = ""+(frac1 - frac2);
+				return answer;
 			case "/":
-				answer = toMixedFraction(frac1 / frac2);
-				return "result: " + answer;
+				answer = ""+(frac1 / frac2);
+				return answer;
 			case "*":
-				answer = toMixedFraction(frac1 * frac2);
-				return "result: " + answer;
+				answer = ""+(frac1 * frac2);
+				return answer;
 			default:
 				return "result: WRONG";
-		}*/
+		}
 	}
 
 }
