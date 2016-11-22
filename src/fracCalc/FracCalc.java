@@ -73,7 +73,7 @@ public class FracCalc {
 		if (operator.equals("+")) // if addition, add
 			result = add(f1Whole, f1Num, f1Den, f2Whole, f2Num,
 					f2Den);
-		else if (operator.equals("-")) // if subtraction, subtract
+		else if (operator.equals("-")) // if subtraction, subtract 
 			result = subtr(f1Whole, f1Num, f1Den, f2Whole,
 					f2Num, f2Den);
 		else if (operator.equals("*")) // if multiplication, multiply
@@ -244,63 +244,54 @@ public class FracCalc {
 	public static String mult(String f1Whole, String f1Num, String f1Den,
 		String f2Whole, String f2Num, String f2Den) {
 		String result = null;
-		int intResultWholeNumber = 0;
-		int intf1Whole = 0;
-		int intf1Num = 0;
-		int intf1Den = 0;
-		int intf2Whole = 0;
-		int intf2Num = 0;
-		int intf2Den = 0;
+		int finalNum, finalDen, whole1Int = 0, num1 = 0, den1 = 0, whole2Int = 0, num2 = 0, den2 = 0;
 
 		if (f1Whole != null)
-			intf1Whole = Integer.parseInt(f1Whole);
+			whole1Int = Integer.parseInt(f1Whole);
 
 		if (f1Num != null) {
-			intf1Num = Integer.parseInt(f1Num);
-			intf1Den = Integer.parseInt(f1Den);
+			num1 = Integer.parseInt(f1Num);
+			den1 = Integer.parseInt(f1Den);
 		}
 
 		if (f1Whole != null && f1Num != null) {
-			if (intf1Whole < 0)
-				intf1Num = intf1Num * -1;
-			intf1Num = intf1Whole * intf1Den + intf1Num;
+			if (whole1Int < 0)
+				num1 *= -1;
+			num1 = whole1Int * den1 + num1;
 		}
 
 		if (f2Whole != null)
-			intf2Whole = Integer.parseInt(f2Whole);
+			whole2Int = Integer.parseInt(f2Whole);
 
 		if (f2Num != null) {
-			intf2Num = Integer.parseInt(f2Num);
-			intf2Den = Integer.parseInt(f2Den);
+			num2 = Integer.parseInt(f2Num);
+			num1 = Integer.parseInt(f2Den);
 		}
 
 		if (f2Whole != null && f2Num != null) {
-			if (intf2Whole < 0)
-				intf2Num = intf2Num * -1;
-			intf2Num = intf2Whole * intf2Den + intf2Num;
+			if (whole2Int < 0)
+				num2 *= -1;
+			num2 = whole2Int * den2 + den2;
 		}
 
 
-		if (f1Num == null && f2Num == null) {
-			intResultWholeNumber = intf1Whole * intf2Whole;
-			result = Integer.toString(intResultWholeNumber);
-			return result;
-		}
+		if (f1Num == null && f2Num == null)
+			return Integer.toString(whole1Int * whole2Int);
 		
 		if (f1Num == null && f2Num != null) {
-			intf1Num = intf1Whole * intf2Den;
-			intf1Den = intf2Den;
+			num1 = whole2Int * den2;
+			den1 = den2;
 		}
 		
 		if (f2Num == null && f1Num != null) {
-			intf2Num = intf2Whole * intf1Den;
-			intf2Den = intf1Den;
+			num2 = whole2Int * den1;
+			den2 = den1;
 		}
 
-		int intResultNumerator = intf1Num * intf2Num;
-		int intResultDenominator = intf1Den * intf2Den;
+		finalNum = num1 * num2;
+		finalDen = den1 * den2;
 
-		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultDenominator);
+		result = Integer.toString(finalNum) + "/" + Integer.toString(finalDen);
 
 		return result;
 	
@@ -309,72 +300,68 @@ public class FracCalc {
 	public static String div(String f1Whole, String f1Num, String f1Den,
 			String f2Whole, String f2Num, String f2Den) {
 		String result = null;
-		int intf1Whole = 0;
-		int intf1Num = 0;
-		int intf1Den = 0;
-		int intf2Whole = 0;
-		int intf2Num = 0;
-		int intf2Den = 0;
+		int whole1Int = 0, num1 = 0, den1 = 0, whole2Int = 0, num2 = 0, den2 = 0;
+
 
 		if (f1Whole != null)
-			intf1Whole = Integer.parseInt(f1Whole);
+			whole1Int = Integer.parseInt(f1Whole);
 		
 		if (f1Num != null) {
-			intf1Num = Integer.parseInt(f1Num);
-			intf1Den = Integer.parseInt(f1Den);
+			num1 = Integer.parseInt(f1Num);
+			den1 = Integer.parseInt(f1Den);
 		}
 
 		if (f1Whole != null && f1Num != null) {
-			if (intf1Whole < 0)
-				intf1Num = intf1Num * -1;
-			intf1Num = intf1Whole * intf1Den + intf1Num;
+			if (whole1Int < 0)
+				num1 *= -1;
+			num1 = whole1Int * den1 + num1;
 		}
 
 		if (f2Whole != null)
-			intf2Whole = Integer.parseInt(f2Whole);
+			whole2Int = Integer.parseInt(f2Whole);
 		
 		if (f2Num != null) {
-			intf2Num = Integer.parseInt(f2Num);
-			intf2Den = Integer.parseInt(f2Den);
+			num2 = Integer.parseInt(f2Num);
+			den2 = Integer.parseInt(f2Den);
 		}
 
 		if (f2Whole != null && f2Num != null) {
-			if (intf2Whole < 0)
-				intf2Num = intf2Num * -1;
-			intf2Num = intf2Whole * intf2Den + intf2Num;
+			if (whole2Int < 0)
+				num2 = num2 * -1;
+			num2 = whole2Int * den2 + num2;
 		}
 
 		if (f1Num == null && f2Num == null) {
-			if (intf1Whole < 0 && intf2Whole < 0) {
-				intf1Whole = intf1Whole * -1;
-				intf2Whole = intf2Whole * -1;
+			if (whole1Int < 0 && whole2Int < 0) {
+				whole1Int = whole1Int * -1;
+				whole2Int = whole2Int * -1;
 			}
 			
-			if (intf1Whole > 0 && intf2Whole < 0) {
-				intf1Whole = intf1Whole * -1;
-				intf2Whole = intf2Whole * -1;
+			if (whole1Int > 0 && whole2Int < 0) {
+				whole1Int = whole1Int * -1;
+				whole2Int = whole2Int * -1;
 			}
-			result = Integer.toString(intf1Whole) + "/" + Integer.toString(intf2Whole);
+			result = Integer.toString(whole1Int) + "/" + Integer.toString(whole2Int);
 			return result;
 		}
 		
 		if (f1Num == null && f2Num != null) {
-			intf1Num = intf1Whole * intf2Den;
-			intf1Den = intf2Den;
+			num1 = whole1Int * den2;
+			den1 = den2;
 		}
 		
 		if (f2Num == null && f1Num != null) {
-			intf2Num = intf2Whole * intf1Den;
-			intf2Den = intf1Den;
+			num2 = whole2Int * den1;
+			den2 = den1;
 		}
 
-		if (intf2Num < 0) {
-			intf2Num = intf2Num * -1;
-			intf2Den = intf2Den * -1;
+		if (num2 < 0) {
+			num2 = num2 * -1;
+			den2 = den2 * -1;
 		}
 		
-		int intResultNumerator = intf1Num * intf2Den;
-		int intResultDenominator = intf1Den * intf2Num;
+		int intResultNumerator = num1 * den2;
+		int intResultDenominator = den1 * num2;
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultDenominator);
 		return result;
 	}
