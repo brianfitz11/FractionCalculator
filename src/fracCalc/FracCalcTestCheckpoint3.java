@@ -3,8 +3,7 @@ package fracCalc;
 import org.junit.Test;
 
 // Checkpoint 3-only tests
-public class FracCalcTestCheckpoint3
-{
+public class FracCalcTestCheckpoint3 {
     @Test public void testCheckpoint3_AdditionSimple3() {FracCalcTestALL.assertForEarlyCheckpoints(null, null, "4_3/7", FracCalc.produceAnswer("1_1/7 + 3_2/7"));}
     @Test public void testCheckpoint3_AdditionWholeNumbers2() {FracCalcTestALL.assertForEarlyCheckpoints(null, null, "1", FracCalc.produceAnswer("2/3 + 1/3"));}
     @Test public void testCheckpoint3_AdditionWholeNumbers7() {FracCalcTestALL.assertForEarlyCheckpoints(null, null, "1021778", FracCalc.produceAnswer("124543 + 897235"));}
