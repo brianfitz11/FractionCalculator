@@ -16,297 +16,289 @@ public class FracCalc {
 	}
 
 	public static String produceAnswer(String input) {
-		int firstSpaceIndex = input.indexOf(" ");
-		int secondSpaceIndex = firstSpaceIndex + 2;
-		int operatorIndex = firstSpaceIndex + 1;
+		int sp1Ind = input.indexOf(" "); //index of space 1
+		int sp2Ind = sp1Ind + 2; //index of space 2
+		int oInd = sp1Ind + 1; //operator index
 		
-		String operator = input.substring(operatorIndex, operatorIndex + 1);
-		String operand1 = input.substring(0, firstSpaceIndex);
-		String operand2 = input.substring(secondSpaceIndex + 1);
+		String operator = input.substring(oInd, oInd + 1); // operator as string 
+		String f1 = input.substring(0, sp1Ind); //full first fraction as string
+		String f2 = input.substring(sp2Ind + 1); //full second fraction as string
 		
-		String operand1Whole = null;
-		String operand1Numerator = null;
-		String operand1Denominator = "1";
+		//initialize fraction 1 values, but don't assign
+		String f1Whole = null;
+		String f1Num = null;
+		String f1Den = "1";
 
-		int operand1UnderscoreIndex = operand1.indexOf("_");
-		int operand1SlashIndex = operand1.indexOf("/");
+		int f1UnderscoreIndex = f1.indexOf("_");
+		int f1SlashIndex = f1.indexOf("/");
 
-		if (operand1SlashIndex != -1) {
-			if (operand1UnderscoreIndex != -1) {
-				operand1Whole = operand1.substring(0, operand1UnderscoreIndex);
-				if (operand1SlashIndex != -1) {
-					operand1Numerator = operand1.substring(operand1UnderscoreIndex + 1, operand1SlashIndex);
-					operand1Denominator = operand1.substring(operand1SlashIndex + 1);
+		if (f1SlashIndex != -1)
+			if (f1UnderscoreIndex != -1) {
+				f1Whole = f1.substring(0, f1UnderscoreIndex);
+				if (f1SlashIndex != -1) {
+					f1Num = f1.substring(f1UnderscoreIndex + 1, f1SlashIndex);
+					f1Den = f1.substring(f1SlashIndex + 1);
 				}
-
-			}
-
 			else {
-				operand1Numerator = operand1.substring(0, operand1SlashIndex);
-				operand1Denominator = operand1.substring(operand1SlashIndex + 1);
+				f1Num = f1.substring(0, f1SlashIndex);
+				f1Den = f1.substring(f1SlashIndex + 1);
 			}
-		} else {
-			operand1Whole = operand1;
-		}
+		} else
+			f1Whole = f1;
 
-		String operand2Whole = null;
-		String operand2Numerator = null;
-		String operand2Denominator = "1";
+		String f2Whole = null;
+		String f2Num = null;
+		String f2Den = "1";
 		
-		int operand2UnderscoreIndex = operand2.indexOf("_");
-		int operand2SlashIndex = operand2.indexOf("/");
+		int f2UnderscoreIndex = f2.indexOf("_");
+		int f2SlashIndex = f2.indexOf("/");
 
-		if (operand2SlashIndex != -1) {
-			if (operand2UnderscoreIndex != -1) {
-				operand2Whole = operand2.substring(0, operand2UnderscoreIndex);
-				if (operand2SlashIndex != -1) {
-					operand2Numerator = operand2.substring(operand2UnderscoreIndex + 1, operand2SlashIndex);
-					operand2Denominator = operand2.substring(operand2SlashIndex + 1);
+		if (f2SlashIndex != -1)
+			if (f2UnderscoreIndex != -1) {
+				f2Whole = f2.substring(0, f2UnderscoreIndex);
+				if (f2SlashIndex != -1) {
+					f2Num = f2.substring(f2UnderscoreIndex + 1, f2SlashIndex);
+					f2Den = f2.substring(f2SlashIndex + 1);
 				}
 			} else {
-				operand2Numerator = operand2.substring(0, operand2SlashIndex);
-				operand2Denominator = operand2.substring(operand2SlashIndex + 1);
+				f2Num = f2.substring(0, f2SlashIndex);
+				f2Den = f2.substring(f2SlashIndex + 1);
 			}
-		} else {
-			operand2Whole = operand2;
-		}
+		else
+			f2Whole = f2;
 
-		String result = null;
-		if (operator.equals("+")) {
-			result = doAddition(operand1Whole, operand1Numerator, operand1Denominator, operand2Whole, operand2Numerator,
-					operand2Denominator);
-		} else if (operator.equals("-")) {
-
-			result = doSubtraction(operand1Whole, operand1Numerator, operand1Denominator, operand2Whole,
-					operand2Numerator, operand2Denominator);
-
-		} else if (operator.equals("*")) {
-			result = doMultiplication(operand1Whole, operand1Numerator, operand1Denominator, operand2Whole,
-					operand2Numerator, operand2Denominator);
-		} else if (operator.equals("/")) {
-			result = doDivision(operand1Whole, operand1Numerator, operand1Denominator, operand2Whole, operand2Numerator,
-					operand2Denominator);
-		}
+		String result = "";
+		
+		//Do math
+		if (operator.equals("+")) // if addition, add
+			result = add(f1Whole, f1Num, f1Den, f2Whole, f2Num,
+					f2Den);
+		else if (operator.equals("-")) // if subtraction, subtract
+			result = subtr(f1Whole, f1Num, f1Den, f2Whole,
+					f2Num, f2Den);
+		else if (operator.equals("*")) // if multiplication, multiply
+			result = mult(f1Whole, f1Num, f1Den, f2Whole,
+					f2Num, f2Den);
+		else if (operator.equals("/")) // if division, divide
+			result = div(f1Whole, f1Num, f1Den, f2Whole, f2Num,
+					f2Den);
 		
 		int resultSlashIndex = result.indexOf("/");
-		if (resultSlashIndex == -1) {
+		
+		if (resultSlashIndex == -1)
 			return result;
-		}
+		
 		result = doSimplify(result);
 		return result;
 	}
 
 
 
-	public static String doAddition(String operand1Whole, String operand1Numerator, String operand1Denominator,
-		String operand2Whole, String operand2Numerator, String operand2Denominator) {
+	public static String add(String f1Whole, String f1Num, String f1Den,
+			String f2Whole, String f2Num, String f2Den) {
 
 		String result = null;
 		int intResultWholeNumber = 0;
-		int intOperand1Whole = 0;
-		int intOperand1Numerator = 0;
-		int intOperand1Denominator = 0;
-		int intOperand2Whole = 0;
-		int intOperand2Numerator = 0;
-		int intOperand2Denominator = 0;
+		int intf1Whole = 0;
+		int intf1Num = 0;
+		int intf1Den = 0;
+		int intf2Whole = 0;
+		int intf2Num = 0;
+		int intf2Den = 0;
 
-		if (operand1Whole != null) {
-			intOperand1Whole = Integer.parseInt(operand1Whole);
-		}
-		if (operand1Numerator != null) {
-			intOperand1Numerator = Integer.parseInt(operand1Numerator);
-			intOperand1Denominator = Integer.parseInt(operand1Denominator);
-		}
-		
-		if (operand1Whole != null && operand1Numerator != null) {
-			if (intOperand1Whole < 0) {
-				intOperand1Numerator = intOperand1Numerator * -1;
-			}
-			intOperand1Numerator = intOperand1Whole * intOperand1Denominator + intOperand1Numerator;
+		if (f1Whole != null)
+			intf1Whole = Integer.parseInt(f1Whole);
+
+		if (f1Num != null) {
+			intf1Num = Integer.parseInt(f1Num);
+			intf1Den = Integer.parseInt(f1Den);
 		}
 		
-		if (operand2Whole != null) {
-			intOperand2Whole = Integer.parseInt(operand2Whole);
-		}
-		if (operand2Numerator != null) {
-			intOperand2Numerator = Integer.parseInt(operand2Numerator);
-			intOperand2Denominator = Integer.parseInt(operand2Denominator);
+		if (f1Whole != null && f1Num != null) {
+			if (intf1Whole < 0) 
+				intf1Num = intf1Num * -1;
+			intf1Num = intf1Whole * intf1Den + intf1Num;
 		}
 		
-		if (operand2Whole != null && operand2Numerator != null) {
-			if (intOperand2Whole < 0) {
-				intOperand2Numerator = intOperand2Numerator * -1;
-			}
-			intOperand2Numerator = intOperand2Whole * intOperand2Denominator + intOperand2Numerator;
+		if (f2Whole != null)
+			intf2Whole = Integer.parseInt(f2Whole);
+	
+		if (f2Num != null) {
+			intf2Num = Integer.parseInt(f2Num);
+			intf2Den = Integer.parseInt(f2Den);
 		}
 		
-		if (operand1Numerator == null && operand2Numerator == null) {
-			intResultWholeNumber = intOperand1Whole + intOperand2Whole;
+		if (f2Whole != null && f2Num != null) {
+			if (intf2Whole < 0)
+				intf2Num = intf2Num * -1;
+
+			intf2Num = intf2Whole * intf2Den + intf2Num;
+		}
+		
+		if (f1Num == null && f2Num == null) {
+			intResultWholeNumber = intf1Whole + intf2Whole;
 			result = Integer.toString(intResultWholeNumber);
 			return result;
 		}
 	
-		if (operand1Numerator == null && operand2Numerator != null) {
-			intOperand1Numerator = intOperand1Whole * intOperand2Denominator;
-			intOperand1Denominator = intOperand2Denominator;
+		if (f1Num == null && f2Num != null) {
+			intf1Num = intf1Whole * intf2Den;
+			intf1Den = intf2Den;
 		}
-		if (operand2Numerator == null && operand1Numerator != null) {
-			intOperand2Numerator = intOperand2Whole * intOperand1Denominator;
-			intOperand2Denominator = intOperand1Denominator;
+		if (f2Num == null && f1Num != null) {
+			intf2Num = intf2Whole * intf1Den;
+			intf2Den = intf1Den;
 		}
 	
-		int intResultCommonDenominator = intOperand1Denominator;
-		int intResultOperand1Numerator = intOperand1Numerator;
-		int intResultOperand2Numerator = intOperand2Numerator;
+		int intResultCommonDenominator = intf1Den;
+		int intResultf1Num = intf1Num;
+		int intResultf2Num = intf2Num;
 		
-		if (intOperand1Denominator != intOperand2Denominator) {
-			intResultCommonDenominator = intOperand1Denominator * intOperand2Denominator;
-			intResultOperand1Numerator = intOperand1Numerator * intOperand2Denominator;
-			intResultOperand2Numerator = intOperand2Numerator * intOperand1Denominator;
-
+		if (intf1Den != intf2Den) {
+			intResultCommonDenominator = intf1Den * intf2Den;
+			intResultf1Num = intf1Num * intf2Den;
+			intResultf2Num = intf2Num * intf1Den;
 		}
 		
-		int intResultNumerator = intResultOperand1Numerator + intResultOperand2Numerator;
+		int intResultNumerator = intResultf1Num + intResultf2Num;
 		
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultCommonDenominator);
 
 		return result;
 	}
 
-	public static String doSubtraction(String operand1Whole, String operand1Numerator, String operand1Denominator,
-			String operand2Whole, String operand2Numerator, String operand2Denominator) {
+	public static String subtr(String f1Whole, String f1Num, String f1Den,
+			String f2Whole, String f2Num, String f2Den) {
 		String result = null;
 		int intResultWholeNumber = 0;
-		int intOperand1Whole = 0;
-		int intOperand1Numerator = 0;
-		int intOperand1Denominator = 0;
-		int intOperand2Whole = 0;
-		int intOperand2Numerator = 0;
-		int intOperand2Denominator = 0;
+		int intf1Whole = 0;
+		int intf1Num = 0;
+		int intf1Den = 0;
+		int intf2Whole = 0;
+		int intf2Num = 0;
+		int intf2Den = 0;
 
-		if (operand1Whole != null) {
-			intOperand1Whole = Integer.parseInt(operand1Whole);
+		if (f1Whole != null) {
+			intf1Whole = Integer.parseInt(f1Whole);
 		}
-		if (operand1Numerator != null) {
-			intOperand1Numerator = Integer.parseInt(operand1Numerator);
-			intOperand1Denominator = Integer.parseInt(operand1Denominator);
+		if (f1Num != null) {
+			intf1Num = Integer.parseInt(f1Num);
+			intf1Den = Integer.parseInt(f1Den);
 		}
 
-		if (operand1Whole != null && operand1Numerator != null) {
-			if (intOperand1Whole < 0) {
-				intOperand1Numerator = intOperand1Numerator * -1;
+		if (f1Whole != null && f1Num != null) {
+			if (intf1Whole < 0) {
+				intf1Num = intf1Num * -1;
 			}
-			intOperand1Numerator = intOperand1Whole * intOperand1Denominator + intOperand1Numerator;
+			intf1Num = intf1Whole * intf1Den + intf1Num;
 		}
 
-		if (operand2Whole != null) {
-			intOperand2Whole = Integer.parseInt(operand2Whole);
+		if (f2Whole != null) {
+			intf2Whole = Integer.parseInt(f2Whole);
 		}
-		if (operand2Numerator != null) {
-			intOperand2Numerator = Integer.parseInt(operand2Numerator);
-			intOperand2Denominator = Integer.parseInt(operand2Denominator);
+		if (f2Num != null) {
+			intf2Num = Integer.parseInt(f2Num);
+			intf2Den = Integer.parseInt(f2Den);
 		}
 
-		if (operand2Whole != null && operand2Numerator != null) {
-			if (intOperand2Whole < 0) {
-				intOperand2Numerator = intOperand2Numerator * -1;
+		if (f2Whole != null && f2Num != null) {
+			if (intf2Whole < 0) {
+				intf2Num = intf2Num * -1;
 			}
-			intOperand2Numerator = intOperand2Whole * intOperand2Denominator + intOperand2Numerator;
+			intf2Num = intf2Whole * intf2Den + intf2Num;
 		}
 
-		if (operand1Numerator == null && operand2Numerator == null) {
-			intResultWholeNumber = intOperand1Whole - intOperand2Whole;
+		if (f1Num == null && f2Num == null) {
+			intResultWholeNumber = intf1Whole - intf2Whole;
 			result = Integer.toString(intResultWholeNumber);
 			return result;
 		}
 		
-		if (operand1Numerator == null && operand2Numerator != null) {
-			intOperand1Numerator = intOperand1Whole * intOperand2Denominator;
-			intOperand1Denominator = intOperand2Denominator;
+		if (f1Num == null && f2Num != null) {
+			intf1Num = intf1Whole * intf2Den;
+			intf1Den = intf2Den;
 		}
-		if (operand2Numerator == null && operand1Numerator != null) {
-			intOperand2Numerator = intOperand2Whole * intOperand1Denominator;
-			intOperand2Denominator = intOperand1Denominator;
-		}
-
-		int intResultCommonDenominator = intOperand1Denominator;
-		int intResultOperand1Numerator = intOperand1Numerator;
-		int intResultOperand2Numerator = intOperand2Numerator;
-
-		if (intOperand1Denominator != intOperand2Denominator) {
-			intResultCommonDenominator = intOperand1Denominator * intOperand2Denominator;
-			intResultOperand1Numerator = intOperand1Numerator * intOperand2Denominator;
-			intResultOperand2Numerator = intOperand2Numerator * intOperand1Denominator;
-
+		if (f2Num == null && f1Num != null) {
+			intf2Num = intf2Whole * intf1Den;
+			intf2Den = intf1Den;
 		}
 
-		int intResultNumerator = intResultOperand1Numerator - intResultOperand2Numerator;
+		int intResultCommonDenominator = intf1Den;
+		int intResultf1Num = intf1Num;
+		int intResultf2Num = intf2Num;
+
+		if (intf1Den != intf2Den) {
+			intResultCommonDenominator = intf1Den * intf2Den;
+			intResultf1Num = intf1Num * intf2Den;
+			intResultf2Num = intf2Num * intf1Den;
+
+		}
+
+		int intResultNumerator = intResultf1Num - intResultf2Num;
 
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultCommonDenominator);
 
 		return result;
 	}
 
-	public static String doMultiplication(String operand1Whole, String operand1Numerator, String operand1Denominator,
-		String operand2Whole, String operand2Numerator, String operand2Denominator) {
+	public static String mult(String f1Whole, String f1Num, String f1Den,
+		String f2Whole, String f2Num, String f2Den) {
 		String result = null;
 		int intResultWholeNumber = 0;
-		int intOperand1Whole = 0;
-		int intOperand1Numerator = 0;
-		int intOperand1Denominator = 0;
-		int intOperand2Whole = 0;
-		int intOperand2Numerator = 0;
-		int intOperand2Denominator = 0;
+		int intf1Whole = 0;
+		int intf1Num = 0;
+		int intf1Den = 0;
+		int intf2Whole = 0;
+		int intf2Num = 0;
+		int intf2Den = 0;
 
-		if (operand1Whole != null) {
-			intOperand1Whole = Integer.parseInt(operand1Whole);
-		}
-		if (operand1Numerator != null) {
-			intOperand1Numerator = Integer.parseInt(operand1Numerator);
-			intOperand1Denominator = Integer.parseInt(operand1Denominator);
-		}
+		if (f1Whole != null)
+			intf1Whole = Integer.parseInt(f1Whole);
 
-		if (operand1Whole != null && operand1Numerator != null) {
-			if (intOperand1Whole < 0) {
-				intOperand1Numerator = intOperand1Numerator * -1;
-			}
-			intOperand1Numerator = intOperand1Whole * intOperand1Denominator + intOperand1Numerator;
+		if (f1Num != null) {
+			intf1Num = Integer.parseInt(f1Num);
+			intf1Den = Integer.parseInt(f1Den);
 		}
 
-		if (operand2Whole != null) {
-			intOperand2Whole = Integer.parseInt(operand2Whole);
+		if (f1Whole != null && f1Num != null) {
+			if (intf1Whole < 0)
+				intf1Num = intf1Num * -1;
+			intf1Num = intf1Whole * intf1Den + intf1Num;
 		}
 
-		if (operand2Numerator != null) {
-			intOperand2Numerator = Integer.parseInt(operand2Numerator);
-			intOperand2Denominator = Integer.parseInt(operand2Denominator);
+		if (f2Whole != null)
+			intf2Whole = Integer.parseInt(f2Whole);
+
+		if (f2Num != null) {
+			intf2Num = Integer.parseInt(f2Num);
+			intf2Den = Integer.parseInt(f2Den);
 		}
 
-		if (operand2Whole != null && operand2Numerator != null) {
-			if (intOperand2Whole < 0) {
-				intOperand2Numerator = intOperand2Numerator * -1;
-			}
-			intOperand2Numerator = intOperand2Whole * intOperand2Denominator + intOperand2Numerator;
+		if (f2Whole != null && f2Num != null) {
+			if (intf2Whole < 0)
+				intf2Num = intf2Num * -1;
+			intf2Num = intf2Whole * intf2Den + intf2Num;
 		}
 
 
-		if (operand1Numerator == null && operand2Numerator == null) {
-			intResultWholeNumber = intOperand1Whole * intOperand2Whole;
+		if (f1Num == null && f2Num == null) {
+			intResultWholeNumber = intf1Whole * intf2Whole;
 			result = Integer.toString(intResultWholeNumber);
 			return result;
 		}
 		
-		if (operand1Numerator == null && operand2Numerator != null) {
-			intOperand1Numerator = intOperand1Whole * intOperand2Denominator;
-			intOperand1Denominator = intOperand2Denominator;
+		if (f1Num == null && f2Num != null) {
+			intf1Num = intf1Whole * intf2Den;
+			intf1Den = intf2Den;
 		}
-		if (operand2Numerator == null && operand1Numerator != null) {
-			intOperand2Numerator = intOperand2Whole * intOperand1Denominator;
-			intOperand2Denominator = intOperand1Denominator;
+		
+		if (f2Num == null && f1Num != null) {
+			intf2Num = intf2Whole * intf1Den;
+			intf2Den = intf1Den;
 		}
 
-		int intResultNumerator = intOperand1Numerator * intOperand2Numerator;
-		int intResultDenominator = intOperand1Denominator * intOperand2Denominator;
+		int intResultNumerator = intf1Num * intf2Num;
+		int intResultDenominator = intf1Den * intf2Den;
 
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultDenominator);
 
@@ -314,77 +306,75 @@ public class FracCalc {
 	
 	}
 
-	public static String doDivision(String operand1Whole, String operand1Numerator, String operand1Denominator,
-			String operand2Whole, String operand2Numerator, String operand2Denominator) {
+	public static String div(String f1Whole, String f1Num, String f1Den,
+			String f2Whole, String f2Num, String f2Den) {
 		String result = null;
-		int intOperand1Whole = 0;
-		int intOperand1Numerator = 0;
-		int intOperand1Denominator = 0;
-		int intOperand2Whole = 0;
-		int intOperand2Numerator = 0;
-		int intOperand2Denominator = 0;
+		int intf1Whole = 0;
+		int intf1Num = 0;
+		int intf1Den = 0;
+		int intf2Whole = 0;
+		int intf2Num = 0;
+		int intf2Den = 0;
 
-		if (operand1Whole != null) {
-			intOperand1Whole = Integer.parseInt(operand1Whole);
-		}
-		if (operand1Numerator != null) {
-			intOperand1Numerator = Integer.parseInt(operand1Numerator);
-			intOperand1Denominator = Integer.parseInt(operand1Denominator);
+		if (f1Whole != null)
+			intf1Whole = Integer.parseInt(f1Whole);
+		
+		if (f1Num != null) {
+			intf1Num = Integer.parseInt(f1Num);
+			intf1Den = Integer.parseInt(f1Den);
 		}
 
-		if (operand1Whole != null && operand1Numerator != null) {
-			if (intOperand1Whole < 0) {
-				intOperand1Numerator = intOperand1Numerator * -1;
+		if (f1Whole != null && f1Num != null) {
+			if (intf1Whole < 0)
+				intf1Num = intf1Num * -1;
+			intf1Num = intf1Whole * intf1Den + intf1Num;
+		}
+
+		if (f2Whole != null)
+			intf2Whole = Integer.parseInt(f2Whole);
+		
+		if (f2Num != null) {
+			intf2Num = Integer.parseInt(f2Num);
+			intf2Den = Integer.parseInt(f2Den);
+		}
+
+		if (f2Whole != null && f2Num != null) {
+			if (intf2Whole < 0)
+				intf2Num = intf2Num * -1;
+			intf2Num = intf2Whole * intf2Den + intf2Num;
+		}
+
+		if (f1Num == null && f2Num == null) {
+			if (intf1Whole < 0 && intf2Whole < 0) {
+				intf1Whole = intf1Whole * -1;
+				intf2Whole = intf2Whole * -1;
 			}
-			intOperand1Numerator = intOperand1Whole * intOperand1Denominator + intOperand1Numerator;
-		}
-
-		if (operand2Whole != null) {
-			intOperand2Whole = Integer.parseInt(operand2Whole);
-		}
-		if (operand2Numerator != null) {
-			intOperand2Numerator = Integer.parseInt(operand2Numerator);
-			intOperand2Denominator = Integer.parseInt(operand2Denominator);
-		}
-
-		if (operand2Whole != null && operand2Numerator != null) {
-			if (intOperand2Whole < 0) {
-				intOperand2Numerator = intOperand2Numerator * -1;
-			}
-			intOperand2Numerator = intOperand2Whole * intOperand2Denominator + intOperand2Numerator;
-		}
-
-		if (operand1Numerator == null && operand2Numerator == null) {
-			if (intOperand1Whole < 0 && intOperand2Whole < 0) {
-				intOperand1Whole = intOperand1Whole * -1;
-				intOperand2Whole = intOperand2Whole * -1;
-			}
-			if (intOperand1Whole > 0 && intOperand2Whole < 0) {
-				intOperand1Whole = intOperand1Whole * -1;
-				intOperand2Whole = intOperand2Whole * -1;
-			}
-				
 			
-			result = Integer.toString(intOperand1Whole) + "/" + Integer.toString(intOperand2Whole);
+			if (intf1Whole > 0 && intf2Whole < 0) {
+				intf1Whole = intf1Whole * -1;
+				intf2Whole = intf2Whole * -1;
+			}
+			result = Integer.toString(intf1Whole) + "/" + Integer.toString(intf2Whole);
 			return result;
-			
 		}
 		
-		if (operand1Numerator == null && operand2Numerator != null) {
-			intOperand1Numerator = intOperand1Whole * intOperand2Denominator;
-			intOperand1Denominator = intOperand2Denominator;
+		if (f1Num == null && f2Num != null) {
+			intf1Num = intf1Whole * intf2Den;
+			intf1Den = intf2Den;
 		}
-		if (operand2Numerator == null && operand1Numerator != null) {
-			intOperand2Numerator = intOperand2Whole * intOperand1Denominator;
-			intOperand2Denominator = intOperand1Denominator;
+		
+		if (f2Num == null && f1Num != null) {
+			intf2Num = intf2Whole * intf1Den;
+			intf2Den = intf1Den;
 		}
 
-		if (intOperand2Numerator < 0) {
-			intOperand2Numerator = intOperand2Numerator * -1;
-			intOperand2Denominator = intOperand2Denominator * -1;
+		if (intf2Num < 0) {
+			intf2Num = intf2Num * -1;
+			intf2Den = intf2Den * -1;
 		}
-		int intResultNumerator = intOperand1Numerator * intOperand2Denominator;
-		int intResultDenominator = intOperand1Denominator * intOperand2Numerator;
+		
+		int intResultNumerator = intf1Num * intf2Den;
+		int intResultDenominator = intf1Den * intf2Num;
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultDenominator);
 		return result;
 	}
@@ -410,9 +400,8 @@ public class FracCalc {
 		int intWhole = intNumerator / intDenominator;
 		intNumerator = intNumerator % intDenominator;
 		if (intNumerator == 0) {
-			if (isNegativeNumber) {
+			if (isNegativeNumber)
 				intWhole = intWhole * -1;
-			}
 			result = Integer.toString(intWhole);
 			return result;
 		}
@@ -431,18 +420,14 @@ public class FracCalc {
 		}
 
 		if (intWhole > 0) {
-			if (isNegativeNumber) {
+			if (isNegativeNumber)
 				intWhole = intWhole * -1;
-			}
 			result = Integer.toString(intWhole) + "_" + Integer.toString(intNumerator) + "/" + Integer.toString(intDenominator);
-			
-		}else {
-			if (isNegativeNumber) {
+		} else {
+			if (isNegativeNumber)
 				intNumerator = intNumerator * -1;
-			}
 			result = Integer.toString(intNumerator) + "/" + Integer.toString(intDenominator);
 		}
 		return result;
 	}
-
 }
