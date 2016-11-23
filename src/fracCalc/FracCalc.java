@@ -5,10 +5,11 @@ import java.util.Scanner;
 public class FracCalc {
 	public static void main(String[] args) {
 		Scanner console = new Scanner(System.in);
-		String input = console.nextLine();
 		
 		System.out.println("Welcome to the fraction calculator! Enter your fraction or 'quit' to quit.");
-		
+
+		String input = console.nextLine();
+
 		while (input.compareToIgnoreCase("quit") != 0) {
 			String answer = produceAnswer(input);
 			System.out.println(answer);
