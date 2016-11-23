@@ -7,6 +7,8 @@ public class FracCalc {
 		Scanner console = new Scanner(System.in);
 		String input = console.nextLine();
 		
+		System.out.println("Welcome to the fraction calculator! Enter your fraction or 'quit' to quit.");
+		
 		while (input.compareToIgnoreCase("quit") != 0) {
 			String answer = produceAnswer(input);
 			System.out.println(answer);
@@ -16,368 +18,380 @@ public class FracCalc {
 	}
 
 	public static String produceAnswer(String input) {
-		int sp1Ind = input.indexOf(" "); //index of space 1
-		int sp2Ind = sp1Ind + 2; //index of space 2
-		int oInd = sp1Ind + 1; //operator index
+		int spaceIndex = input.indexOf(" ");
+		int spaceIndex2 = spaceIndex + 2;
+		int operIndex = spaceIndex + 1;
 		
-		String operator = input.substring(oInd, oInd + 1); // operator as string 
-		String f1 = input.substring(0, sp1Ind); //full first fraction as string
-		String f2 = input.substring(sp2Ind + 1); //full second fraction as string
+		String operator = input.substring(operIndex, operIndex + 1);
+		String frac1 = input.substring(0, spaceIndex);
+		String frac2 = input.substring(spaceIndex2 + 1);
 		
-		//initialize fraction 1 values, but don't assign
-		String f1Whole = null;
-		String f1Num = null;
-		String f1Den = "1";
+		String frac1Whole = null;
+		String frac1Num = null;
+		String frac1Den = "1";
 
-		int f1UnderscoreIndex = f1.indexOf("_");
-		int f1SlashIndex = f1.indexOf("/");
+		int f1_index = frac1.indexOf("_"); //index of the _
+		int frac1SIndex = frac1.indexOf("/"); //index of the /
 
-		if (f1SlashIndex != -1)
-			if (f1UnderscoreIndex != -1) {
-				f1Whole = f1.substring(0, f1UnderscoreIndex);
-				if (f1SlashIndex != -1) {
-					f1Num = f1.substring(f1UnderscoreIndex + 1, f1SlashIndex);
-					f1Den = f1.substring(f1SlashIndex + 1);
+		if (frac1SIndex != -1) {
+			if (f1_index != -1) {
+				frac1Whole = frac1.substring(0, f1_index);
+				if (frac1SIndex != -1) {
+					frac1Num = frac1.substring(f1_index + 1, frac1SIndex);
+					frac1Den = frac1.substring(frac1SIndex + 1);
 				}
-			else {
-				f1Num = f1.substring(0, f1SlashIndex);
-				f1Den = f1.substring(f1SlashIndex + 1);
+
 			}
-		} else
-			f1Whole = f1;
 
-		String f2Whole = null;
-		String f2Num = null;
-		String f2Den = "1";
+			else {
+				frac1Num = frac1.substring(0, frac1SIndex);
+				frac1Den = frac1.substring(frac1SIndex + 1);
+			}
+		} else {
+			frac1Whole = frac1;
+		}
+
+		String frac2Whole = null;
+		String frac2Num = null;
+		String frac2Den = "1";
 		
-		int f2UnderscoreIndex = f2.indexOf("_");
-		int f2SlashIndex = f2.indexOf("/");
+		int frac2_index = frac2.indexOf("_");
+		int frac2SIndex = frac2.indexOf("/");
 
-		if (f2SlashIndex != -1)
-			if (f2UnderscoreIndex != -1) {
-				f2Whole = f2.substring(0, f2UnderscoreIndex);
-				if (f2SlashIndex != -1) {
-					f2Num = f2.substring(f2UnderscoreIndex + 1, f2SlashIndex);
-					f2Den = f2.substring(f2SlashIndex + 1);
+		if (frac2SIndex != -1) {
+			if (frac2_index != -1) {
+				frac2Whole = frac2.substring(0, frac2_index);
+				if (frac2SIndex != -1) {
+					frac2Num = frac2.substring(frac2_index + 1, frac2SIndex);
+					frac2Den = frac2.substring(frac2SIndex + 1);
 				}
 			} else {
-				f2Num = f2.substring(0, f2SlashIndex);
-				f2Den = f2.substring(f2SlashIndex + 1);
+				frac2Num = frac2.substring(0, frac2SIndex);
+				frac2Den = frac2.substring(frac2SIndex + 1);
 			}
-		else
-			f2Whole = f2;
+		} else {
+			frac2Whole = frac2;
+		}
 
-		String result = "";
-		
-		//Do math
-		if (operator.equals("+")) // if addition, add
-			result = add(f1Whole, f1Num, f1Den, f2Whole, f2Num,
-					f2Den);
-		else if (operator.equals("-")) // if subtraction, subtract 
-			result = subtr(f1Whole, f1Num, f1Den, f2Whole,
-					f2Num, f2Den);
-		else if (operator.equals("*")) // if multiplication, multiply
-			result = mult(f1Whole, f1Num, f1Den, f2Whole,
-					f2Num, f2Den);
-		else if (operator.equals("/")) // if division, divide
-			result = div(f1Whole, f1Num, f1Den, f2Whole, f2Num,
-					f2Den);
+		String result = null;
+		if (operator.equals("+")) {
+			result = add(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
+		} else if (operator.equals("-")) {
+			result = subtract(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
+		} else if (operator.equals("*")) {
+			result = multiply(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
+		} else if (operator.equals("/")) {
+			result = divide(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
+		}
 		
 		int resultSlashIndex = result.indexOf("/");
-		
-		if (resultSlashIndex == -1)
+		if (resultSlashIndex == -1) {
 			return result;
-		
-		result = doSimplify(result);
+		}
+		result = simplify(result);
 		return result;
 	}
 
 
 
-	public static String add(String f1Whole, String f1Num, String f1Den,
-			String f2Whole, String f2Num, String f2Den) {
+	public static String add(String frac1Whole, String frac1Num, String frac1Den,
+		String frac2Whole, String frac2Num, String frac2Denominator) {
 
 		String result = null;
-		int intResultWholeNumber = 0;
-		int intf1Whole = 0;
-		int intf1Num = 0;
-		int intf1Den = 0;
-		int intf2Whole = 0;
-		int intf2Num = 0;
-		int intf2Den = 0;
+		int wResultInt = 0;
+		int w1AsInt = 0;
+		int frac1NumInt = 0;
+		int frac1DenInt = 0;
+		int w2AsInt = 0;
+		int frac2NumInt = 0;
+		int frac2DenInt = 0;
 
-		if (f1Whole != null)
-			intf1Whole = Integer.parseInt(f1Whole);
-
-		if (f1Num != null) {
-			intf1Num = Integer.parseInt(f1Num);
-			intf1Den = Integer.parseInt(f1Den);
+		if (frac1Whole != null) {
+			w1AsInt = Integer.parseInt(frac1Whole);
+		}
+		if (frac1Num != null) {
+			frac1NumInt = Integer.parseInt(frac1Num);
+			frac1DenInt = Integer.parseInt(frac1Den);
 		}
 		
-		if (f1Whole != null && f1Num != null) {
-			if (intf1Whole < 0) 
-				intf1Num = intf1Num * -1;
-			intf1Num = intf1Whole * intf1Den + intf1Num;
+		if (frac1Whole != null && frac1Num != null) {
+			if (w1AsInt < 0) {
+				frac1NumInt = frac1NumInt * -1;
+			}
+			frac1NumInt = w1AsInt * frac1DenInt + frac1NumInt;
 		}
 		
-		if (f2Whole != null)
-			intf2Whole = Integer.parseInt(f2Whole);
-	
-		if (f2Num != null) {
-			intf2Num = Integer.parseInt(f2Num);
-			intf2Den = Integer.parseInt(f2Den);
+		if (frac2Whole != null) {
+			w2AsInt = Integer.parseInt(frac2Whole);
+		}
+		if (frac2Num != null) {
+			frac2NumInt = Integer.parseInt(frac2Num);
+			frac2DenInt = Integer.parseInt(frac2Denominator);
 		}
 		
-		if (f2Whole != null && f2Num != null) {
-			if (intf2Whole < 0)
-				intf2Num = intf2Num * -1;
-
-			intf2Num = intf2Whole * intf2Den + intf2Num;
+		if (frac2Whole != null && frac2Num != null) {
+			if (w2AsInt < 0) {
+				frac2NumInt = frac2NumInt * -1;
+			}
+			frac2NumInt = w2AsInt * frac2DenInt + frac2NumInt;
 		}
 		
-		if (f1Num == null && f2Num == null) {
-			intResultWholeNumber = intf1Whole + intf2Whole;
-			result = Integer.toString(intResultWholeNumber);
+		if (frac1Num == null && frac2Num == null) {
+			wResultInt = w1AsInt + w2AsInt;
+			result = Integer.toString(wResultInt);
 			return result;
 		}
 	
-		if (f1Num == null && f2Num != null) {
-			intf1Num = intf1Whole * intf2Den;
-			intf1Den = intf2Den;
+		if (frac1Num == null && frac2Num != null) {
+			frac1NumInt = w1AsInt * frac2DenInt;
+			frac1DenInt = frac2DenInt;
 		}
-		if (f2Num == null && f1Num != null) {
-			intf2Num = intf2Whole * intf1Den;
-			intf2Den = intf1Den;
+		if (frac2Num == null && frac1Num != null) {
+			frac2NumInt = w2AsInt * frac1DenInt;
+			frac2DenInt = frac1DenInt;
 		}
 	
-		int intResultCommonDenominator = intf1Den;
-		int intResultf1Num = intf1Num;
-		int intResultf2Num = intf2Num;
+		int intResultCommonDenominator = frac1DenInt;
+		int intResultfrac1Num = frac1NumInt;
+		int intResultfrac2Num = frac2NumInt;
 		
-		if (intf1Den != intf2Den) {
-			intResultCommonDenominator = intf1Den * intf2Den;
-			intResultf1Num = intf1Num * intf2Den;
-			intResultf2Num = intf2Num * intf1Den;
+		if (frac1DenInt != frac2DenInt) {
+			intResultCommonDenominator = frac1DenInt * frac2DenInt;
+			intResultfrac1Num = frac1NumInt * frac2DenInt;
+			intResultfrac2Num = frac2NumInt * frac1DenInt;
+
 		}
 		
-		int intResultNumerator = intResultf1Num + intResultf2Num;
+		int intResultNumerator = intResultfrac1Num + intResultfrac2Num;
 		
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultCommonDenominator);
 
 		return result;
 	}
 
-	public static String subtr(String f1Whole, String f1Num, String f1Den,
-			String f2Whole, String f2Num, String f2Den) {
+	public static String subtract(String frac1Whole, String frac1Num, String frac1Den,
+			String frac2Whole, String frac2Num, String frac2Denominator) {
 		String result = null;
-		int intResultWholeNumber = 0;
-		int intf1Whole = 0;
-		int intf1Num = 0;
-		int intf1Den = 0;
-		int intf2Whole = 0;
-		int intf2Num = 0;
-		int intf2Den = 0;
+		int wResultInt = 0;
+		int w1AsInt = 0;
+		int frac1NumInt = 0;
+		int frac1DenInt = 0;
+		int w2AsInt = 0;
+		int frac2NumInt = 0;
+		int frac2DenInt = 0;
 
-		if (f1Whole != null) {
-			intf1Whole = Integer.parseInt(f1Whole);
+		if (frac1Whole != null) {
+			w1AsInt = Integer.parseInt(frac1Whole);
 		}
-		if (f1Num != null) {
-			intf1Num = Integer.parseInt(f1Num);
-			intf1Den = Integer.parseInt(f1Den);
+		if (frac1Num != null) {
+			frac1NumInt = Integer.parseInt(frac1Num);
+			frac1DenInt = Integer.parseInt(frac1Den);
 		}
 
-		if (f1Whole != null && f1Num != null) {
-			if (intf1Whole < 0) {
-				intf1Num = intf1Num * -1;
+		if (frac1Whole != null && frac1Num != null) {
+			if (w1AsInt < 0) {
+				frac1NumInt = frac1NumInt * -1;
 			}
-			intf1Num = intf1Whole * intf1Den + intf1Num;
+			frac1NumInt = w1AsInt * frac1DenInt + frac1NumInt;
 		}
 
-		if (f2Whole != null) {
-			intf2Whole = Integer.parseInt(f2Whole);
+		if (frac2Whole != null) {
+			w2AsInt = Integer.parseInt(frac2Whole);
 		}
-		if (f2Num != null) {
-			intf2Num = Integer.parseInt(f2Num);
-			intf2Den = Integer.parseInt(f2Den);
+		if (frac2Num != null) {
+			frac2NumInt = Integer.parseInt(frac2Num);
+			frac2DenInt = Integer.parseInt(frac2Denominator);
 		}
 
-		if (f2Whole != null && f2Num != null) {
-			if (intf2Whole < 0) {
-				intf2Num = intf2Num * -1;
+		if (frac2Whole != null && frac2Num != null) {
+			if (w2AsInt < 0) {
+				frac2NumInt = frac2NumInt * -1;
 			}
-			intf2Num = intf2Whole * intf2Den + intf2Num;
+			frac2NumInt = w2AsInt * frac2DenInt + frac2NumInt;
 		}
 
-		if (f1Num == null && f2Num == null) {
-			intResultWholeNumber = intf1Whole - intf2Whole;
-			result = Integer.toString(intResultWholeNumber);
+		if (frac1Num == null && frac2Num == null) {
+			wResultInt = w1AsInt - w2AsInt;
+			result = Integer.toString(wResultInt);
 			return result;
 		}
 		
-		if (f1Num == null && f2Num != null) {
-			intf1Num = intf1Whole * intf2Den;
-			intf1Den = intf2Den;
+		if (frac1Num == null && frac2Num != null) {
+			frac1NumInt = w1AsInt * frac2DenInt;
+			frac1DenInt = frac2DenInt;
 		}
-		if (f2Num == null && f1Num != null) {
-			intf2Num = intf2Whole * intf1Den;
-			intf2Den = intf1Den;
-		}
-
-		int intResultCommonDenominator = intf1Den;
-		int intResultf1Num = intf1Num;
-		int intResultf2Num = intf2Num;
-
-		if (intf1Den != intf2Den) {
-			intResultCommonDenominator = intf1Den * intf2Den;
-			intResultf1Num = intf1Num * intf2Den;
-			intResultf2Num = intf2Num * intf1Den;
-
+		if (frac2Num == null && frac1Num != null) {
+			frac2NumInt = w2AsInt * frac1DenInt;
+			frac2DenInt = frac1DenInt;
 		}
 
-		int intResultNumerator = intResultf1Num - intResultf2Num;
+		int intResultCommonDenominator = frac1DenInt;
+		int intResultfrac1Num = frac1NumInt;
+		int intResultfrac2Num = frac2NumInt;
 
+		if (frac1DenInt != frac2DenInt) {
+			intResultCommonDenominator = frac1DenInt * frac2DenInt;
+			intResultfrac1Num = frac1NumInt * frac2DenInt;
+			intResultfrac2Num = frac2NumInt * frac1DenInt;
+
+		}
+		int intResultNumerator = intResultfrac1Num - intResultfrac2Num;
 		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultCommonDenominator);
-
+		
 		return result;
 	}
 
-	public static String mult(String f1Whole, String f1Num, String f1Den,
-		String f2Whole, String f2Num, String f2Den) {
+	public static String multiply(String frac1Whole, String frac1Num, String frac1Den,
+		String frac2Whole, String frac2Num, String frac2Denominator) {
 		String result = null;
-		int finalNum, finalDen, whole1Int = 0, num1 = 0, den1 = 0, whole2Int = 0, num2 = 0, den2 = 0;
+		int wResultInt = 0;
+		int w1AsInt = 0;
+		int frac1NumInt = 0;
+		int frac1DenInt = 0;
+		int w2AsInt = 0;
+		int frac2NumInt = 0;
+		int frac2DenInt = 0;
 
-		if (f1Whole != null)
-			whole1Int = Integer.parseInt(f1Whole);
-
-		if (f1Num != null) {
-			num1 = Integer.parseInt(f1Num);
-			den1 = Integer.parseInt(f1Den);
+		if (frac1Whole != null) {
+			w1AsInt = Integer.parseInt(frac1Whole);
+		}
+		if (frac1Num != null) {
+			frac1NumInt = Integer.parseInt(frac1Num);
+			frac1DenInt = Integer.parseInt(frac1Den);
 		}
 
-		if (f1Whole != null && f1Num != null) {
-			if (whole1Int < 0)
-				num1 *= -1;
-			num1 = whole1Int * den1 + num1;
+		if (frac1Whole != null && frac1Num != null) {
+			if (w1AsInt < 0) {
+				frac1NumInt = frac1NumInt * -1;
+			}
+			frac1NumInt = w1AsInt * frac1DenInt + frac1NumInt;
 		}
 
-		if (f2Whole != null)
-			whole2Int = Integer.parseInt(f2Whole);
-
-		if (f2Num != null) {
-			num2 = Integer.parseInt(f2Num);
-			num1 = Integer.parseInt(f2Den);
+		if (frac2Whole != null) {
+			w2AsInt = Integer.parseInt(frac2Whole);
 		}
 
-		if (f2Whole != null && f2Num != null) {
-			if (whole2Int < 0)
-				num2 *= -1;
-			num2 = whole2Int * den2 + den2;
+		if (frac2Num != null) {
+			frac2NumInt = Integer.parseInt(frac2Num);
+			frac2DenInt = Integer.parseInt(frac2Denominator);
+		}
+
+		if (frac2Whole != null && frac2Num != null) {
+			if (w2AsInt < 0) {
+				frac2NumInt = frac2NumInt * -1;
+			}
+			frac2NumInt = w2AsInt * frac2DenInt + frac2NumInt;
 		}
 
 
-		if (f1Num == null && f2Num == null)
-			return Integer.toString(whole1Int * whole2Int);
+		if (frac1Num == null && frac2Num == null) {
+			wResultInt = w1AsInt * w2AsInt;
+			result = Integer.toString(wResultInt);
+			return result;
+		}
 		
-		if (f1Num == null && f2Num != null) {
-			num1 = whole2Int * den2;
-			den1 = den2;
+		if (frac1Num == null && frac2Num != null) {
+			frac1NumInt = w1AsInt * frac2DenInt;
+			frac1DenInt = frac2DenInt;
 		}
-		
-		if (f2Num == null && f1Num != null) {
-			num2 = whole2Int * den1;
-			den2 = den1;
+		if (frac2Num == null && frac1Num != null) {
+			frac2NumInt = w2AsInt * frac1DenInt;
+			frac2DenInt = frac1DenInt;
 		}
 
-		finalNum = num1 * num2;
-		finalDen = den1 * den2;
+		int intResultNumerator = frac1NumInt * frac2NumInt;
+		int intResultDenominator = frac1DenInt * frac2DenInt;
 
-		result = Integer.toString(finalNum) + "/" + Integer.toString(finalDen);
+		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultDenominator);
 
 		return result;
 	
 	}
 
-	public static String div(String f1Whole, String f1Num, String f1Den,
-			String f2Whole, String f2Num, String f2Den) {
+	public static String divide(String frac1W, String frac1Num, String frac1Den, String frac2W, String frac2Num, String frac2Den) {
 		String result = null;
-		int whole1Int = 0, num1 = 0, den1 = 0, whole2Int = 0, num2 = 0, den2 = 0;
+		int w1AsInt = 0;
+		int frac1NumInt = 0;
+		int frac1DenInt = 0;
+		int w2AsInt = 0;
+		int frac2NumInt = 0;
+		int frac2DenInt = 0;
 
-
-		if (f1Whole != null)
-			whole1Int = Integer.parseInt(f1Whole);
-		
-		if (f1Num != null) {
-			num1 = Integer.parseInt(f1Num);
-			den1 = Integer.parseInt(f1Den);
+		if (frac1W != null) {
+			w1AsInt = Integer.parseInt(frac1W);
+		}
+		if (frac1Num != null) {
+			frac1NumInt = Integer.parseInt(frac1Num);
+			frac1DenInt = Integer.parseInt(frac1Den);
 		}
 
-		if (f1Whole != null && f1Num != null) {
-			if (whole1Int < 0)
-				num1 *= -1;
-			num1 = whole1Int * den1 + num1;
+		if (frac1W != null && frac1Num != null) {
+			if (w1AsInt < 0) {
+				frac1NumInt = frac1NumInt * -1;
+			}
+			frac1NumInt = w1AsInt * frac1DenInt + frac1NumInt;
 		}
 
-		if (f2Whole != null)
-			whole2Int = Integer.parseInt(f2Whole);
-		
-		if (f2Num != null) {
-			num2 = Integer.parseInt(f2Num);
-			den2 = Integer.parseInt(f2Den);
+		if (frac2W != null) {
+			w2AsInt = Integer.parseInt(frac2W);
+		}
+		if (frac2Num != null) {
+			frac2NumInt = Integer.parseInt(frac2Num);
+			frac2DenInt = Integer.parseInt(frac2Den);
 		}
 
-		if (f2Whole != null && f2Num != null) {
-			if (whole2Int < 0)
-				num2 = num2 * -1;
-			num2 = whole2Int * den2 + num2;
+		if (frac2W != null && frac2Num != null) {
+			if (w2AsInt < 0) {
+				frac2NumInt = frac2NumInt * -1;
+			}
+			frac2NumInt = w2AsInt * frac2DenInt + frac2NumInt;
 		}
 
-		if (f1Num == null && f2Num == null) {
-			if (whole1Int < 0 && whole2Int < 0) {
-				whole1Int = whole1Int * -1;
-				whole2Int = whole2Int * -1;
+		if (frac1Num == null && frac2Num == null) {
+			if (w1AsInt < 0 && w2AsInt < 0) {
+				w1AsInt = w1AsInt * -1;
+				w2AsInt = w2AsInt * -1;
+			}
+			if (w1AsInt > 0 && w2AsInt < 0) {
+				w1AsInt = w1AsInt * -1;
+				w2AsInt = w2AsInt * -1;
 			}
 			
-			if (whole1Int > 0 && whole2Int < 0) {
-				whole1Int = whole1Int * -1;
-				whole2Int = whole2Int * -1;
-			}
-			result = Integer.toString(whole1Int) + "/" + Integer.toString(whole2Int);
-			return result;
+			result = Integer.toString(w1AsInt) + "/" + Integer.toString(w2AsInt);
+			return result;	
 		}
 		
-		if (f1Num == null && f2Num != null) {
-			num1 = whole1Int * den2;
-			den1 = den2;
+		if (frac1Num == null && frac2Num != null) {
+			frac1NumInt = w1AsInt * frac2DenInt;
+			frac1DenInt = frac2DenInt;
 		}
-		
-		if (f2Num == null && f1Num != null) {
-			num2 = whole2Int * den1;
-			den2 = den1;
+		if (frac2Num == null && frac1Num != null) {
+			frac2NumInt = w2AsInt * frac1DenInt;
+			frac2DenInt = frac1DenInt;
 		}
 
-		if (num2 < 0) {
-			num2 = num2 * -1;
-			den2 = den2 * -1;
+		if (frac2NumInt < 0) {
+			frac2NumInt = frac2NumInt * -1;
+			frac2DenInt = frac2DenInt * -1;
 		}
-		
-		int intResultNumerator = num1 * den2;
-		int intResultDenominator = den1 * num2;
-		result = Integer.toString(intResultNumerator) + "/" + Integer.toString(intResultDenominator);
+		int resultNum = frac1NumInt * frac2DenInt;
+		int resultDen = frac1DenInt * frac2NumInt;
+		result = Integer.toString(resultNum) + "/" + Integer.toString(resultDen);
 		return result;
 	}
 	
-	public static String doSimplify(String fraction) {
+	public static String simplify(String fraction) {
 		String result = null;
 		int slashIndex = fraction.indexOf("/");
-		String numerator = fraction.substring(0, slashIndex);
-		String denominator = fraction.substring(slashIndex + 1);
-		if (numerator == "0") {
+		String finalNum = fraction.substring(0, slashIndex);
+		String finalDen = fraction.substring(slashIndex + 1);
+		if (finalNum == "0") {
 			result = "0";
 			return result;
 		}
 
-		int intNumerator = Integer.parseInt(numerator);
-		int intDenominator = Integer.parseInt(denominator);
+		int intNumerator = Integer.parseInt(finalNum);
+		int intDenominator = Integer.parseInt(finalDen);
 		boolean isNegativeNumber = false;
 		if (intNumerator < 0) {
 			isNegativeNumber = true;
@@ -387,8 +401,9 @@ public class FracCalc {
 		int intWhole = intNumerator / intDenominator;
 		intNumerator = intNumerator % intDenominator;
 		if (intNumerator == 0) {
-			if (isNegativeNumber)
+			if (isNegativeNumber) {
 				intWhole = intWhole * -1;
+			}
 			result = Integer.toString(intWhole);
 			return result;
 		}
@@ -407,14 +422,18 @@ public class FracCalc {
 		}
 
 		if (intWhole > 0) {
-			if (isNegativeNumber)
+			if (isNegativeNumber) {
 				intWhole = intWhole * -1;
+			}
 			result = Integer.toString(intWhole) + "_" + Integer.toString(intNumerator) + "/" + Integer.toString(intDenominator);
-		} else {
-			if (isNegativeNumber)
+			
+		}else {
+			if (isNegativeNumber) {
 				intNumerator = intNumerator * -1;
+			}
 			result = Integer.toString(intNumerator) + "/" + Integer.toString(intDenominator);
 		}
 		return result;
 	}
+
 }
