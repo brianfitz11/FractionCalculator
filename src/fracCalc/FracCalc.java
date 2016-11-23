@@ -10,45 +10,43 @@ public class FracCalc {
 
 		String input = console.nextLine();
 
-		while (input.compareToIgnoreCase("quit") != 0) {
+		while (input.compareToIgnoreCase("quit") != 0) { // as long as the user doesn't type "quit" run the program and return the answers!
 			String answer = produceAnswer(input);
 			System.out.println(answer);
 			input = console.nextLine();
 		}
-		console.close();
+		console.close(); //to save memory, close scanner variable
 	}
 
-	public static String produceAnswer(String input) {
+	public static String produceAnswer(String input) { //the majority of the logic is done here, breaking the user input into computer readable variables (1/2 to 1, 2) 
 		int spaceIndex = input.indexOf(" ");
 		int spaceIndex2 = spaceIndex + 2;
 		int operIndex = spaceIndex + 1;
 		
-		String operator = input.substring(operIndex, operIndex + 1);
-		String frac1 = input.substring(0, spaceIndex);
-		String frac2 = input.substring(spaceIndex2 + 1);
+		String operator = input.substring(operIndex, operIndex + 1); // set operator to string. This will be +, -, / or *
 		
-		String frac1Whole = null;
+		String frac1 = input.substring(0, spaceIndex); // full fraction 1 as string
+		String frac2 = input.substring(spaceIndex2 + 1); // full fraction 2 as string
+		
+		String frac1Whole = null; // initialize String variables
 		String frac1Num = null;
 		String frac1Den = "1";
 
 		int f1_index = frac1.indexOf("_"); //index of the _
 		int frac1SIndex = frac1.indexOf("/"); //index of the /
 
-		if (frac1SIndex != -1) {
-			if (f1_index != -1) {
-				frac1Whole = frac1.substring(0, f1_index);
+		if (frac1SIndex != -1) { //check if fraction1 has a whole number
+			if (f1_index != -1) { // see if has an underscore
+				frac1Whole = frac1.substring(0, f1_index); //set whole number
 				if (frac1SIndex != -1) {
 					frac1Num = frac1.substring(f1_index + 1, frac1SIndex);
 					frac1Den = frac1.substring(frac1SIndex + 1);
 				}
-
-			}
-
-			else {
+			} else {
 				frac1Num = frac1.substring(0, frac1SIndex);
 				frac1Den = frac1.substring(frac1SIndex + 1);
 			}
-		} else {
+		} else { // if no _, set the entirety to the wholeNumber 
 			frac1Whole = frac1;
 		}
 
@@ -59,38 +57,42 @@ public class FracCalc {
 		int frac2_index = frac2.indexOf("_");
 		int frac2SIndex = frac2.indexOf("/");
 
-		if (frac2SIndex != -1) {
-			if (frac2_index != -1) {
+		if (frac2SIndex != -1) { // check is fraction 2 has/is a whole number
+			if (frac2_index != -1) { // check to see if it has an underscore
 				frac2Whole = frac2.substring(0, frac2_index);
 				if (frac2SIndex != -1) {
 					frac2Num = frac2.substring(frac2_index + 1, frac2SIndex);
 					frac2Den = frac2.substring(frac2SIndex + 1);
 				}
-			} else {
+			} else { 
 				frac2Num = frac2.substring(0, frac2SIndex);
 				frac2Den = frac2.substring(frac2SIndex + 1);
 			}
-		} else {
+		} else { // if no _, set the entirety to the wholeNumber 
 			frac2Whole = frac2;
 		}
 
 		String result = null;
-		if (operator.equals("+")) {
-			result = add(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
-		} else if (operator.equals("-")) {
-			result = subtract(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
-		} else if (operator.equals("*")) {
-			result = multiply(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
-		} else if (operator.equals("/")) {
-			result = divide(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);
+		//after setting variables to their appropriate values and types, do the math
+		if (operator.equals("+")) { // add
+			result = add(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den); //call the right method and pass the right values
+		} else if (operator.equals("-")) { //subtract
+			result = subtract(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);//call the right method and pass the right values
+		} else if (operator.equals("*")) { //multiply
+			result = multiply(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);//call the right method and pass the right values
+		} else if (operator.equals("/")) { //divide
+			result = divide(frac1Whole, frac1Num, frac1Den, frac2Whole, frac2Num, frac2Den);//call the right method and pass the right values
 		}
 		
-		int resultSlashIndex = result.indexOf("/");
-		if (resultSlashIndex == -1) {
+		int resultSlashIndex = result.indexOf("/"); //make sure theres a / in the result
+		
+		if (resultSlashIndex == -1) { // if there is one, return it how it is. otherwise simplify
 			return result;
 		}
-		result = simplify(result);
-		return result;
+		
+		result = simplify(result); //simplify
+		
+		return result; //return result
 	}
 
 
